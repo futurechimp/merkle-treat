@@ -12,10 +12,20 @@ class LeafSpec extends TestStack {
       leaf.item shouldEqual "foo"
     }
 
-    describe("knows its own identity") {
-      describe("as a SHA256 hash of the item with the letter L prepended") {
+    describe("leaf identity") {
+      it("should be a SHA256 hash of the item with the letter L prepended") {
         val output = ("L" + "foo").sha256.hex.toString
         leaf.identity shouldEqual output
+      }
+    }
+
+    describe("checking if an item is in the leaf") {
+      it("should return true if the item is the leaf's item") {
+        leaf.isIn("foo") shouldEqual true
+      }
+
+      it("should return false if the item isn't the leaf's item") {
+        leaf.isIn("bar") shouldEqual false
       }
     }
   }
