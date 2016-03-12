@@ -11,7 +11,7 @@ class MapStoreSpec extends TestStack {
     val leaf = Leaf(item)
 
     describe("adding a leaf") {
-      store.add(store, leaf)
+      store.add(leaf)
     }
 
     describe("retrieving the item") {

@@ -9,10 +9,12 @@ class BranchSpec extends TestStack {
   describe("A branch in the Merkle tree") {
     val store = new MapStore
     val leftItem = "fred" // should be less than "pivot"
+    val leftLeaf = Leaf(leftItem)
     val rightItem = "zena" // should be greater than "pivot"
-//    store.add()
+    val rightLeaf = Leaf(rightItem)
+    store.add(leftLeaf)
 
-    val branch = Branch(store, "pivot", "leftId", "rightId")
+    val branch = Branch("pivot", "leftId", "rightId")
 
     describe("identity") {
       it("should be a SHA256 hash of the branch properties prepended by the letter B") {
