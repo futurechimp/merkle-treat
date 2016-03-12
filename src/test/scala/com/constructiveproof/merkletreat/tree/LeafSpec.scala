@@ -1,12 +1,14 @@
 package com.constructiveproof.merkletreat.tree
 
+import com.constructiveproof.merkletreat.stores.MapStore
 import com.constructiveproof.merkletreat.testsupport.TestStack
 import com.roundeights.hasher.Implicits._
 
 class LeafSpec extends TestStack {
 
   describe("A leaf of the Merkle tree") {
-    val leaf = Leaf("foo")
+    val store = new MapStore
+    val leaf = Leaf(store, "foo")
 
     describe("knows what item it's got inside it") {
       leaf.item shouldEqual "foo"

@@ -15,7 +15,7 @@ class MapStore extends Storable {
   }
 
   override def retrieve(key: String): Node = {
-    Leaf(map(key))
+    Leaf(this, map(key))
   }
 
 }
