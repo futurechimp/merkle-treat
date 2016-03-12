@@ -14,8 +14,8 @@ class LeafSpec extends TestStack {
 
     describe("leaf identity") {
       it("should be a SHA256 hash of the item with the letter L prepended") {
-        val output = ("L" + "foo").sha256.hex.toString
-        leaf.identity shouldEqual output
+        val identityHash = ("L" + "foo").sha256.hex.toString
+        leaf.identity shouldEqual identityHash
       }
     }
 
