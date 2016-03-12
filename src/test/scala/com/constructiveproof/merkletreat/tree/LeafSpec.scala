@@ -1,4 +1,4 @@
-package com.constructiveproof.merkletreat
+package com.constructiveproof.merkletreat.tree
 
 import com.constructiveproof.merkletreat.testsupport.TestStack
 import com.roundeights.hasher.Implicits._

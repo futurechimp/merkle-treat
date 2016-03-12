@@ -1,9 +1,13 @@
-package com.constructiveproof.merkletreat
-
+package com.constructiveproof.merkletreat.tree
 
 import com.roundeights.hasher.Implicits._
 
-case class Leaf(item: String) {
+sealed trait Node {
+
+}
+
+
+case class Leaf(item: String) extends Node {
 
   val identity = ("L" + item).sha256.hex.toString
 
@@ -16,3 +20,5 @@ case class Leaf(item: String) {
   }
 
 }
+
+case class Branch() extends Node

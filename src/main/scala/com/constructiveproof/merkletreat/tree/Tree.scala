@@ -1,11 +1,11 @@
-package com.constructiveproof.merkletreat
+package com.constructiveproof.merkletreat.tree
 
 class Tree {
 
   private var store: Map[String, String]  = Map.empty
 
   def add(key: String, value: String) = {
-    val thing = (key -> value)
+    val thing = key -> value
     store = store + thing
   }
 
