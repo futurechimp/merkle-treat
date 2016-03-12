@@ -34,7 +34,7 @@ case class Leaf(item: String) extends Node {
     } else {
       Branch(item, identity, newLeaf.identity)
     }
-//    store.add(newBranch)
+    store.add(newBranch)
     newBranch
   }
 

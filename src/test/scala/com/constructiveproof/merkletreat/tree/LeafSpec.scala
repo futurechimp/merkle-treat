@@ -43,9 +43,9 @@ class LeafSpec extends TestStack {
           store.retrieve(newLeaf.identity) shouldEqual newLeaf
         }
 
-//        it("should create and store a new Branch") {
-//          store.retrieve(newBranch.identity) shouldEqual newBranch
-//        }
+        it("should create and store a new Branch") {
+          store.retrieve(newBranch.identity) shouldEqual newBranch
+        }
 
         describe("when the item being added is lexicographically less than the current leaf's item") {
           val newItem = "blah"
