@@ -9,7 +9,7 @@ class LeafSpec extends TestStack {
   describe("A leaf of the Merkle tree") {
     val store = new MapStore
     val item = "foo"
-    val leaf = Leaf(store, item)
+    val leaf = Leaf(item)
 
     describe("knows what item it's got inside it") {
       leaf.item shouldEqual item
@@ -24,11 +24,11 @@ class LeafSpec extends TestStack {
 
     describe("checking if an item is in the leaf") {
       it("should return true if the item is the leaf's item") {
-        leaf.isIn(item) shouldEqual true
+        leaf contains item shouldEqual true
       }
 
       it("should return false if the item isn't the leaf's item") {
-        leaf.isIn("bar") shouldEqual false
+        leaf contains "bar" shouldEqual false
       }
     }
   }
