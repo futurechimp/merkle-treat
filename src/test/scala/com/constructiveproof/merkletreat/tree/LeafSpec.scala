@@ -8,22 +8,23 @@ class LeafSpec extends TestStack {
 
   describe("A leaf of the Merkle tree") {
     val store = new MapStore
-    val leaf = Leaf(store, "foo")
+    val item = "foo"
+    val leaf = Leaf(store, item)
 
     describe("knows what item it's got inside it") {
-      leaf.item shouldEqual "foo"
+      leaf.item shouldEqual item
     }
 
     describe("leaf identity") {
       it("should be a SHA256 hash of the item with the letter L prepended") {
-        val identityHash = ("L" + "foo").sha256.hex.toString
+        val identityHash = ("L" + item).sha256.hex.toString
         leaf.identity shouldEqual identityHash
       }
     }
 
     describe("checking if an item is in the leaf") {
       it("should return true if the item is the leaf's item") {
-        leaf.isIn("foo") shouldEqual true
+        leaf.isIn(item) shouldEqual true
       }
 
       it("should return false if the item isn't the leaf's item") {
