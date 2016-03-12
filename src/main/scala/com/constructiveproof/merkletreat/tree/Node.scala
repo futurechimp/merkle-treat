@@ -27,10 +27,11 @@ case class Leaf(item: String) extends Node {
 
   def add(store: Storable, newItem: String): Branch = {
     val newLeaf = Leaf(newItem)
+    store.add(newLeaf)
+
     if(item < newItem) {
       Branch(newItem, newLeaf.identity, identity)
     } else {
-      println("JAAAAAA")
       Branch(item, identity, newLeaf.identity)
     }
   }

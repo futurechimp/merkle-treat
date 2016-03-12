@@ -34,10 +34,17 @@ class LeafSpec extends TestStack {
 
     describe("adding an item to a Leaf") {
       describe("when the item is not yet in the tree") {
+        val newItem = "blah"
+        val newLeaf = Leaf(newItem)
+        leaf.add(store, newItem)
+
         it("should create and store a new Leaf"){
+          store.retrieve(newLeaf.identity) shouldEqual newLeaf
+        }
+
+        it("should create and store a new Branch") {
 
         }
-        it("should create and store a new Branch") {}
 
         describe("when the item being added is lexicographically less than the current leaf's item") {
           val newItem = "blah"
