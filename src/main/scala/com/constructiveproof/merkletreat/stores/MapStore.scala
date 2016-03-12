@@ -5,17 +5,18 @@ import scala.collection.mutable
 
 class MapStore extends Storable {
 
-  var map = mutable.Map[String, String]()
+  var map = mutable.Map[String, Node]()
 
   override def add(node: Node): Unit = {
     node match {
-      case leaf: Leaf => map.update(leaf.identity, leaf.item)
+      case leaf: Leaf => map.update(leaf.identity, leaf)
+      case branch: Branch => map.update(branch.identity, branch)
     }
 
   }
 
   override def retrieve(key: String): Node = {
-    Leaf(map(key))
+    map(key)
   }
 
 }

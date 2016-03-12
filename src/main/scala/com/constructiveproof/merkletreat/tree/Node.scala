@@ -29,11 +29,13 @@ case class Leaf(item: String) extends Node {
     val newLeaf = Leaf(newItem)
     store.add(newLeaf)
 
-    if(item < newItem) {
+    val newBranch = if(item < newItem) {
       Branch(newItem, newLeaf.identity, identity)
     } else {
       Branch(item, identity, newLeaf.identity)
     }
+//    store.add(newBranch)
+    newBranch
   }
 
   def contains(thing: String): Boolean = {
