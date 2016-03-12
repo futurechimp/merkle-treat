@@ -6,7 +6,7 @@ import com.roundeights.hasher.Implicits._
 sealed trait Node {
   val identity: String
 
-  def add(store: Storable, item: String): Branch
+  def add(store: Storable, item: String): Node
 
   def checkHash(key: String, value: Node) = {
     if (key != value.identity) {
@@ -48,15 +48,15 @@ case class Branch(pivot: String, leftBranchId: String, rightBranchId: String) ex
 
   val identity = ("B" + pivot + leftBranchId + rightBranchId).sha256.hex.toString
 
-  def add(store: Storable, item: String): Branch = {
+  def add(store: Storable, item: String): Node = {
     if (item <= pivot) {
       val leftBranch = store.retrieve(leftBranchId)
       checkHash(leftBranchId, leftBranch)
-      leftBranch.asInstanceOf[Branch]
+      leftBranch
     } else {
       val rightBranch = store.retrieve(rightBranchId)
       checkHash(rightBranchId, rightBranch)
-      rightBranch.asInstanceOf[Branch]
+      rightBranch
     }
   }
 

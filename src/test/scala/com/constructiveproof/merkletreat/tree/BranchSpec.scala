@@ -8,33 +8,38 @@ class BranchSpec extends TestStack {
 
   describe("A branch in the Merkle tree") {
     val store = new MapStore
-    val leftItem = "fred" // should be less than "pivot"
-    val leftLeaf = Leaf(leftItem)
-    val rightItem = "zena" // should be greater than "pivot"
-    val rightLeaf = Leaf(rightItem)
-    store.add(leftLeaf)
+    val item1 = "fred"
+    val item2 = "zena"
+    val leftLeaf = Leaf(item1)
+    val rightLeaf = Leaf(item2)
+    val leftBranchId = leftLeaf.identity
+    val rightBranchId = rightLeaf.identity
 
-    val branch = Branch("pivot", "leftId", "rightId")
+    val branch = leftLeaf.add(store, item1)
 
     describe("identity") {
-      it("should be a SHA256 hash of the branch properties prepended by the letter B") {
-        branch.identity shouldEqual ("B" + "pivot" + "leftId" + "rightId").sha256.hex.toString
+      ignore("should be a SHA256 hash of the branch properties prepended by the letter B") {
+        println("Store: " + store.map)
+        println("B: " + branch)
+        println("lid: " + leftBranchId)
+        println("rid: " + rightBranchId)
+        branch.identity shouldEqual ("B" + item1 + leftBranchId + rightBranchId).sha256.hex.toString
       }
     }
 
-    describe("adding a string") {
+    describe("adding an item") {
       describe("when the string being added is lexicographically less than the pivot") {
-        ignore("should add the string to the left side of the branch") {
-          branch.add(store, leftItem)
-          branch contains leftItem shouldEqual true
+        it("should add the string to the left side of the branch") {
+          branch.add(store, item1)
+          branch contains item1 shouldEqual true
           // figure out which side of the branch it got added to
         }
       }
 
       describe("when the string being added is lexicographically greater than the pivot") {
-        ignore("it should add the string to the right side of the branch") {
-          branch.add(store, rightItem)
-          branch contains rightItem shouldEqual true
+        it("it should add the string to the right side of the branch") {
+          branch.add(store, item2)
+          branch contains item2 shouldEqual true
           // figure out which side of the branch it got added to
         }
       }
