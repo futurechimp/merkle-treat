@@ -31,6 +31,39 @@ class LeafSpec extends TestStack {
         leaf contains "bar" shouldEqual false
       }
     }
+
+    describe("adding an item to a Leaf") {
+      describe("when the item is not yet in the tree") {
+        it("should create and store a new Leaf"){
+
+        }
+        it("should create and store a new Branch") {}
+
+        describe("when the item being added is lexicographically less than the current leaf's item") {
+          val newItem = "blah"
+          val newLeafIdentity = Leaf(newItem).identity
+          val resultLeaf = leaf.add(store, newItem)
+
+          it("should return a new Branch with the current leaf's item as the pivot") {
+            resultLeaf shouldEqual Branch(leaf.item, leaf.identity, newLeafIdentity)
+          }
+        }
+
+        describe("when the item being added is lexicographically greater than the current leaf's item") {
+          it("should return a new Branch with the new item as the pivot"){
+            val newItem = "zigzag"
+            val newLeafIdentity = Leaf(newItem).identity
+            val resultLeaf = leaf.add(store, newItem)
+
+            resultLeaf shouldEqual Branch(newItem, newLeafIdentity, leaf.identity)
+          }
+        }
+      }
+
+      describe("when the item has previously been added to the tree") {
+        it("should not add anything at all") {}
+      }
+    }
   }
 
 }
