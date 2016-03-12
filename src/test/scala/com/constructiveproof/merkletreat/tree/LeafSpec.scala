@@ -68,7 +68,10 @@ class LeafSpec extends TestStack {
         }
       }
 
-      describe("when the item has previously been added to the tree") {
+      ignore("when the item has previously been added to the tree") {
+        // In a console, adding twice results in the exact same mapstore
+        // contents, and it doesn't seem worth it to add the guard as it'll
+        // mean returning multiple types === superclass. Ask George about it.
         it("should not add anything at all") {}
       }
     }
