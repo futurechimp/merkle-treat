@@ -24,8 +24,9 @@ case class Leaf(item: String) extends Node {
 
   def add(store: Storable, newItem: String): Node = {
     if (newItem == item) {
-      return this
+      return this // TODO: gross for type safety
     }
+
     val newLeaf = Leaf(newItem)
     store.add(newLeaf)
 
@@ -36,7 +37,6 @@ case class Leaf(item: String) extends Node {
     }
 
     store.add(newBranch)
-    assert(newBranch.leftLeafId != newBranch.rightLeafId)
     newBranch
   }
 

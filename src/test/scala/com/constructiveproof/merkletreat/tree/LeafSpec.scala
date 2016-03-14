@@ -33,11 +33,15 @@ class LeafSpec extends TestStack {
     }
 
     describe("adding an item to a Leaf") {
+      describe("when it's the same item") {
+        ignore("should return itself"){}
+      }
+
       describe("when the item is not yet in the tree") {
         val newItem = "blah"
         val newLeaf = Leaf(newItem)
-        val newBranch: Branch = Branch(leaf.item, leaf.identity, newLeaf.identity)
-        leaf.add(store, newItem)
+
+        val newBranch = leaf.add(store, newItem)
 
         it("should create and store a new Leaf"){
           store.retrieve(newLeaf.identity) shouldEqual newLeaf
