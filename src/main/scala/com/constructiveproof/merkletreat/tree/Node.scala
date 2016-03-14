@@ -14,6 +14,10 @@ sealed trait Node {
     }
   }
 
+  def contains(thing: String): Boolean
+
+  def contains(store: Storable, thing: String): Boolean
+
   case class HashIdentityException(message: String = "Stored key doesn't match hash!") extends Throwable(message)
 
 }
@@ -44,36 +48,44 @@ case class Leaf(item: String) extends Node {
     item == thing
   }
 
+  def contains(store: Storable, thing: String) = ???
+
 }
 
 case class Branch(pivot: String, leftLeafId: String, rightLeafId: String) extends Node {
 
   val identity = ("B" + pivot + leftLeafId + rightLeafId).sha256.hex.toString
 
-  def add(store: Storable, item: String): Branch = {
-    val branch = if (item <= pivot) {
+  def add(store: Storable, newItem: String): Branch = {
+    val branch = if (newItem <= pivot) {
       val leftLeaf = store.retrieve(leftLeafId)
       checkHash(leftLeafId, leftLeaf)
-      val subLeaf = leftLeaf.add(store, item)
+      val subLeaf = leftLeaf.add(store, newItem)
       Branch(pivot, subLeaf.identity, rightLeafId)
 
     } else {
       val rightLeaf = store.retrieve(rightLeafId)
       checkHash(rightLeafId, rightLeaf)
-      val subLeaf = rightLeaf.add(store, item)
+      val subLeaf = rightLeaf.add(store, newItem)
       Branch(pivot, leftLeafId, subLeaf.identity)
     }
     store.add(branch)
     branch
   }
 
+  def contains(thing: String) = ???
+
   def contains(store: Storable, thing: String): Boolean = {
     if (thing <= pivot) {
-      store.retrieve(leftLeafId).asInstanceOf[Leaf].contains(thing)
-//      store.retrieve(leftLeafId).asInstanceOf[Branch].contains(store, thing)
+      store.retrieve(leftLeafId) match {
+        case leaf: Leaf => leaf.contains(thing)
+        case branch: Branch => branch.contains(store, thing)
+      }
     } else {
-      store.retrieve(rightLeafId).asInstanceOf[Leaf].contains(thing)
-//      store.retrieve(rightLeafId).asInstanceOf[Branch].contains(store, thing)
+      store.retrieve(rightLeafId) match {
+        case leaf: Leaf => leaf.contains(thing)
+        case branch: Branch => branch.contains(store, thing)
+      }
     }
   }
 }
