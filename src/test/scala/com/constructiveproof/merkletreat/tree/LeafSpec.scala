@@ -50,26 +50,6 @@ class LeafSpec extends TestStack {
         it("should create and store a new Branch") {
           store.retrieve(newBranch.identity) shouldEqual newBranch
         }
-
-        describe("when the item being added is lexicographically less than the current leaf's item") {
-          val newItem = "blah"
-          val newLeafIdentity = Leaf(newItem).identity
-          val resultBranch = leaf.add(store, newItem)
-
-          it("should return a new Branch with the current leaf's item as the pivot") {
-            resultBranch shouldEqual Branch(leaf.item, leaf.identity, newLeafIdentity)
-          }
-        }
-
-        describe("when the item being added is lexicographically greater than the current leaf's item") {
-          it("should return a new Branch with the new item as the pivot"){
-            val newItem = "zigzag"
-            val newLeafIdentity = Leaf(newItem).identity
-            val resultBranch = leaf.add(store, newItem)
-
-            resultBranch shouldEqual Branch(newItem, newLeafIdentity, leaf.identity)
-          }
-        }
       }
 
       ignore("when the item has previously been added to the tree") {
