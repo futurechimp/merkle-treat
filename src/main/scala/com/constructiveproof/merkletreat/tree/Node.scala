@@ -6,7 +6,7 @@ import com.roundeights.hasher.Implicits._
 sealed trait Node {
   val identity: String
 
-  def add(store: Storable, item: String): Node
+  def add(item: String): Node
 
   def checkHash(key: String, value: Node) = {
     if (key != value.identity) {
@@ -16,28 +16,26 @@ sealed trait Node {
 
   def contains(thing: String): Boolean
 
-  def contains(store: Storable, thing: String): Boolean
-
   case class HashIdentityException(message: String = "Stored key doesn't match hash!") extends Throwable(message)
 
 }
 
 
-case class Leaf(item: String) extends Node {
-  val identity = ("L" + item).sha256.hex.toString //.substring(0, 4)
+case class Leaf(item: String, store: Storable) extends Node {
+  val identity = ("L" + item).sha256.hex.toString
 
-  def add(store: Storable, newItem: String): Node = {
+  def add(newItem: String): Node = {
     if (newItem == item) {
       return this // TODO: gross for type safety
     }
 
-    val newLeaf = Leaf(newItem)
+    val newLeaf = Leaf(newItem, store)
     store.add(newLeaf)
 
     val newBranch = if (item < newItem) {
-      Branch(item, identity, newLeaf.identity)
+      Branch(item, identity, newLeaf.identity, store)
     } else {
-      Branch(newItem, newLeaf.identity, identity)
+      Branch(newItem, newLeaf.identity, identity, store)
     }
 
     store.add(newBranch)
@@ -48,44 +46,35 @@ case class Leaf(item: String) extends Node {
     item == thing
   }
 
-  def contains(store: Storable, thing: String) = ???
-
 }
 
-case class Branch(pivot: String, leftLeafId: String, rightLeafId: String) extends Node {
+case class Branch(pivot: String, leftLeafId: String, rightLeafId: String, store: Storable) extends Node {
 
   val identity = ("B" + pivot + leftLeafId + rightLeafId).sha256.hex.toString
 
-  def add(store: Storable, newItem: String): Branch = {
+  def add(newItem: String): Branch = {
     val branch = if (newItem <= pivot) {
       val leftLeaf = store.retrieve(leftLeafId)
       checkHash(leftLeafId, leftLeaf)
-      val subLeaf = leftLeaf.add(store, newItem)
-      Branch(pivot, subLeaf.identity, rightLeafId)
+      val subLeaf = leftLeaf.add(newItem)
+      Branch(pivot, subLeaf.identity, rightLeafId, store)
 
     } else {
       val rightLeaf = store.retrieve(rightLeafId)
       checkHash(rightLeafId, rightLeaf)
-      val subLeaf = rightLeaf.add(store, newItem)
-      Branch(pivot, leftLeafId, subLeaf.identity)
+      val subLeaf = rightLeaf.add(newItem)
+      Branch(pivot, leftLeafId, subLeaf.identity, store)
     }
     store.add(branch)
     branch
   }
 
-  def contains(thing: String) = ???
-
-  def contains(store: Storable, thing: String): Boolean = {
+  def contains(thing: String): Boolean = {
     if (thing <= pivot) {
-      store.retrieve(leftLeafId) match {
-        case leaf: Leaf => leaf.contains(thing)
-        case branch: Branch => branch.contains(store, thing)
-      }
+      store.retrieve(leftLeafId).contains(thing)
     } else {
-      store.retrieve(rightLeafId) match {
-        case leaf: Leaf => leaf.contains(thing)
-        case branch: Branch => branch.contains(store, thing)
-      }
+      store.retrieve(rightLeafId).contains(thing)
     }
   }
+
 }

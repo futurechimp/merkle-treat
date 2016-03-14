@@ -10,10 +10,10 @@ class BranchSpec extends TestStack {
     val store = new MapStore
     val fred = "fred"
     val zena = "zena"
-    val fredLeaf = Leaf(fred)
+    val fredLeaf = Leaf(fred, store)
     store.add(fredLeaf)
 
-    val branch = fredLeaf.add(store, zena).asInstanceOf[Branch]
+    val branch = fredLeaf.add(zena).asInstanceOf[Branch]
     val zenaLeaf = store.retrieve(branch.rightLeafId)
 
     describe("identity") {
@@ -24,8 +24,8 @@ class BranchSpec extends TestStack {
 
     describe("adding an item containing 'aaa'") {
       val aaa = "aaa"
-      val result = branch.add(store, aaa)
-      val aaaLeaf = store.retrieve(Leaf("aaa").identity)
+      val result = branch.add(aaa)
+      val aaaLeaf = store.retrieve(Leaf("aaa", store).identity)
 
       describe("since 'aaa' is lexicographically greater than the branch pivot, currently 'zena'") {
         it("should add a new Leaf(aaa) to the left side of the branch") {
@@ -39,14 +39,14 @@ class BranchSpec extends TestStack {
         ignore("should make the new branch's pivot 'aaa'") {}
 
         describe("asking whether the item is in one of the leaves connected to the branch") {
-          it("xxx returns true") {
-            result contains(store, fred) shouldEqual true
+          it("xxx returns true"){
+            result contains fred shouldEqual true
           }
         }
       }
 
       describe("when the string being added is lexicographically greater than the pivot") {
-        branch.add(store, zena)
+        branch.add(zena)
 
         it("it should add a new Leaf(zena) to the right side of the branch") {
           branch.leftLeafId shouldEqual fredLeaf.identity
@@ -55,7 +55,7 @@ class BranchSpec extends TestStack {
 
         describe("asking whether the item is in one of the leaves connected to the branch") {
           it("returns true") {
-            branch contains(store, zena) shouldEqual true
+            branch contains zena shouldEqual true
           }
         }
       }
@@ -63,7 +63,7 @@ class BranchSpec extends TestStack {
 
     describe("attempting to find an item which isn't in the tree") {
       it("should fail") {
-        branch.contains(store, "nope") shouldEqual false
+        branch.contains("nope") shouldEqual false
       }
     }
   }

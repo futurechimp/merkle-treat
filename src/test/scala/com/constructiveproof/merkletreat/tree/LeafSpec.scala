@@ -9,7 +9,7 @@ class LeafSpec extends TestStack {
   describe("A leaf of the Merkle tree") {
     val store = new MapStore
     val foo = "foo"
-    val fooLeaf = Leaf(foo)
+    val fooLeaf = Leaf(foo, store)
     store.add(fooLeaf)
 
     describe("knows what item it's got inside it") {
@@ -40,9 +40,9 @@ class LeafSpec extends TestStack {
 
       describe("when the item is not yet in the tree") {
         val newItem = "blah"
-        val newLeaf = Leaf(newItem)
+        val newLeaf = Leaf(newItem, store)
 
-        val newBranch = fooLeaf.add(store, newItem)
+        val newBranch = fooLeaf.add(newItem)
 
         it("should create and store a new Leaf") {
           store.retrieve(newLeaf.identity) shouldEqual newLeaf

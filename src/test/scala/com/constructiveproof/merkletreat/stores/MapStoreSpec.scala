@@ -8,8 +8,8 @@ class MapStoreSpec extends TestStack {
   describe("Using a Map as a key-value store") {
     val store = new MapStore
     val item = "foo"
-    val leaf = Leaf(item)
-    val branch = Branch("pivot", "leftBranchId", "rightBranchId")
+    val leaf = Leaf(item, store)
+    val branch = Branch("pivot", "leftBranchId", "rightBranchId", store)
 
     describe("adding a leaf") {
       store.add(leaf)
