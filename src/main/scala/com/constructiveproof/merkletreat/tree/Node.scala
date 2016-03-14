@@ -48,7 +48,7 @@ case class Leaf(item: String) extends Node {
 
 case class Branch(pivot: String, leftLeafId: String, rightLeafId: String) extends Node {
 
-  val identity = ("B" + pivot + leftLeafId + rightLeafId).sha256.hex.toString //.substring(0, 4)
+  val identity = ("B" + pivot + leftLeafId + rightLeafId).sha256.hex.toString
 
   def add(store: Storable, item: String): Branch = {
     val branch = if (item <= pivot) {
@@ -70,8 +70,10 @@ case class Branch(pivot: String, leftLeafId: String, rightLeafId: String) extend
   def contains(store: Storable, thing: String): Boolean = {
     if (thing <= pivot) {
       store.retrieve(leftLeafId).asInstanceOf[Leaf].contains(thing)
+//      store.retrieve(leftLeafId).asInstanceOf[Branch].contains(store, thing)
     } else {
       store.retrieve(rightLeafId).asInstanceOf[Leaf].contains(thing)
+//      store.retrieve(rightLeafId).asInstanceOf[Branch].contains(store, thing)
     }
   }
 }

@@ -14,14 +14,11 @@ class BranchSpec extends TestStack {
     store.add(fredLeaf)
 
     val branch = fredLeaf.add(store, zena).asInstanceOf[Branch]
-    val tmpZenaLeaf = Leaf("zena")
     val zenaLeaf = store.retrieve(branch.rightLeafId)
-    assert(zenaLeaf == tmpZenaLeaf)
-    assert(zenaLeaf.identity != fredLeaf.identity)
 
     describe("identity") {
       ignore("should be a SHA256 hash of the branch properties prepended by the letter B") {
-        branch.identity shouldEqual ("B" + fred + fredLeaf.identity + zenaLeaf.identity).sha256.hex.toString.substring(0, 4)
+        branch.identity shouldEqual ("B" + fred + fredLeaf.identity + zenaLeaf.identity).sha256.hex.toString
       }
     }
 
@@ -31,7 +28,7 @@ class BranchSpec extends TestStack {
       val aaaLeaf = store.retrieve(Leaf("aaa").identity)
 
       describe("since 'aaa' is lexicographically greater than the branch pivot, currently 'zena'") {
-        it("xxx should add a new Leaf(aaa) to the left side of the branch") {
+        it("should add a new Leaf(aaa) to the left side of the branch") {
           store.retrieve(result.leftLeafId).asInstanceOf[Branch].leftLeafId shouldEqual aaaLeaf.identity
         }
 
@@ -42,16 +39,16 @@ class BranchSpec extends TestStack {
         ignore("should make the new branch's pivot 'aaa'") {}
 
         describe("asking whether the item is in one of the leaves connected to the branch") {
-          it("returns true") {
+          it("xxx returns true") {
             result contains(store, fred) shouldEqual true
           }
         }
       }
 
       describe("when the string being added is lexicographically greater than the pivot") {
-
         branch.add(store, zena)
-        it("it should add a new Leaf to the right side of the branch") {
+
+        it("it should add a new Leaf(zena) to the right side of the branch") {
           branch.leftLeafId shouldEqual fredLeaf.identity
           branch.rightLeafId shouldEqual zenaLeaf.identity
         }
@@ -61,8 +58,6 @@ class BranchSpec extends TestStack {
             branch contains(store, zena) shouldEqual true
           }
         }
-
-
       }
     }
 
@@ -71,7 +66,5 @@ class BranchSpec extends TestStack {
         branch.contains(store, "nope") shouldEqual false
       }
     }
-
   }
-
 }
