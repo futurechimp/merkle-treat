@@ -13,14 +13,15 @@ class BranchSpec extends TestStack {
     val fredLeaf = Leaf(fred)
     store.add(fredLeaf)
 
-    //    println("1: " + store.map)
     val branch = fredLeaf.add(store, zena).asInstanceOf[Branch]
-    //    println("2: " + store.map)
+    val tmpZenaLeaf = Leaf("zena")
     val zenaLeaf = store.retrieve(branch.rightLeafId)
+    assert(zenaLeaf == tmpZenaLeaf)
+    assert(zenaLeaf.identity != fredLeaf.identity)
 
     describe("identity") {
       ignore("should be a SHA256 hash of the branch properties prepended by the letter B") {
-        branch.identity shouldEqual ("B" + fred + fredLeaf.identity + zenaLeaf.identity).sha256.hex.toString
+        branch.identity shouldEqual ("B" + fred + fredLeaf.identity + zenaLeaf.identity).sha256.hex.toString.substring(0, 4)
       }
     }
 
@@ -30,16 +31,15 @@ class BranchSpec extends TestStack {
       val aaaLeaf = store.retrieve(Leaf("aaa").identity)
 
       describe("since 'aaa' is lexicographically greater than the branch pivot, currently 'zena'") {
-        println("result branch: " + result)
-        println("left: " + store.retrieve(result.leftLeafId))
-        println("right: " + store.retrieve(result.rightLeafId))
-        it("should add a new Leaf(aaa) to the left side of the branch") {
-          result.leftLeafId shouldEqual aaaLeaf.identity
+        it("xxx should add a new Leaf(aaa) to the left side of the branch") {
+          store.retrieve(result.leftLeafId).asInstanceOf[Branch].leftLeafId shouldEqual aaaLeaf.identity
         }
 
         it("should connect the branch to the other leaf") {
           result.rightLeafId shouldEqual zenaLeaf.identity
         }
+
+        ignore("should make the new branch's pivot 'aaa'") {}
 
         describe("asking whether the item is in one of the leaves connected to the branch") {
           it("returns true") {
@@ -49,6 +49,7 @@ class BranchSpec extends TestStack {
       }
 
       describe("when the string being added is lexicographically greater than the pivot") {
+
         branch.add(store, zena)
         it("it should add a new Leaf to the right side of the branch") {
           branch.leftLeafId shouldEqual fredLeaf.identity
