@@ -20,7 +20,7 @@ sealed trait Node {
 
 
 case class Leaf(item: String) extends Node {
-  val identity = ("L" + item).sha256.hex.toString.substring(0, 4)
+  val identity = ("L" + item).sha256.hex.toString //.substring(0, 4)
 
   def add(store: Storable, newItem: String): Node = {
     if (newItem == item) {
@@ -48,7 +48,7 @@ case class Leaf(item: String) extends Node {
 
 case class Branch(pivot: String, leftLeafId: String, rightLeafId: String) extends Node {
 
-  val identity = ("B" + pivot + leftLeafId + rightLeafId).sha256.hex.toString.substring(0, 4)
+  val identity = ("B" + pivot + leftLeafId + rightLeafId).sha256.hex.toString //.substring(0, 4)
 
   def add(store: Storable, item: String): Branch = {
     val branch = if (item <= pivot) {
