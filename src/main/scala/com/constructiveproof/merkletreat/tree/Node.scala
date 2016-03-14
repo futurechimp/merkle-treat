@@ -16,20 +16,17 @@ sealed trait Node {
 
   case class HashIdentityException(message: String = "Stored key doesn't match hash!") extends Throwable(message)
 
-  def contains(thing: String): Boolean
-
 }
 
 
 case class Leaf(item: String) extends Node {
-
   val identity = ("L" + item).sha256.hex.toString
 
-  def add(store: Storable, newItem: String): Branch = {
+  def add(store: Storable, newItem: String): Node = {
     val newLeaf = Leaf(newItem)
     store.add(newLeaf)
 
-    val newBranch = if(item < newItem) {
+    val newBranch = if (item < newItem) {
       Branch(newItem, newLeaf.identity, identity)
     } else {
       Branch(item, identity, newLeaf.identity)
@@ -44,24 +41,31 @@ case class Leaf(item: String) extends Node {
 
 }
 
-case class Branch(pivot: String, leftBranchId: String, rightBranchId: String) extends Node {
+case class Branch(pivot: String, leftLeafId: String, rightLeafId: String) extends Node {
 
-  val identity = ("B" + pivot + leftBranchId + rightBranchId).sha256.hex.toString
+  val identity = ("B" + pivot + leftLeafId + rightLeafId).sha256.hex.toString
 
-  def add(store: Storable, item: String): Node = {
+  def add(store: Storable, item: String): Branch = {
     if (item <= pivot) {
-      val leftBranch = store.retrieve(leftBranchId)
-      checkHash(leftBranchId, leftBranch)
-      leftBranch
+      val leftLeaf = store.retrieve(leftLeafId).asInstanceOf[Leaf]
+      checkHash(leftLeafId, leftLeaf)
+      val subLeaf = leftLeaf.add(store, item)
+      Branch(pivot, subLeaf.identity, leftLeafId)
+
     } else {
-      val rightBranch = store.retrieve(rightBranchId)
-      checkHash(rightBranchId, rightBranch)
-      rightBranch
+      val rightLeaf = store.retrieve(rightLeafId)
+      checkHash(rightLeafId, rightLeaf)
+      val subLeaf = rightLeaf.add(store, item)
+      Branch(pivot, subLeaf.identity, rightLeafId)
     }
   }
 
-  def contains(thing: String): Boolean = {
-    true
+  def contains(store: Storable, thing: String): Boolean = {
+    if (thing <= pivot) {
+      store.retrieve(leftLeafId).asInstanceOf[Leaf].contains(thing)
+    } else {
+      store.retrieve(rightLeafId).asInstanceOf[Leaf].contains(thing)
+    }
   }
 
 

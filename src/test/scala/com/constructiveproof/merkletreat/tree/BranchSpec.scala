@@ -8,40 +8,66 @@ class BranchSpec extends TestStack {
 
   describe("A branch in the Merkle tree") {
     val store = new MapStore
-    val item1 = "fred"
-    val item2 = "zena"
-    val leftLeaf = Leaf(item1)
-    val rightLeaf = Leaf(item2)
-    val leftBranchId = leftLeaf.identity
-    val rightBranchId = rightLeaf.identity
+    val fred = "fred"
+    val zena = "zena"
+    val fredLeaf = Leaf(fred)
+    store.add(fredLeaf)
 
-    val branch = leftLeaf.add(store, item1)
+    //    println("1: " + store.map)
+    val branch = fredLeaf.add(store, zena).asInstanceOf[Branch]
+    //    println("2: " + store.map)
+    val zenaLeaf = store.retrieve(branch.rightLeafId)
 
     describe("identity") {
       ignore("should be a SHA256 hash of the branch properties prepended by the letter B") {
-        println("Store: " + store.map)
-        println("B: " + branch)
-        println("lid: " + leftBranchId)
-        println("rid: " + rightBranchId)
-        branch.identity shouldEqual ("B" + item1 + leftBranchId + rightBranchId).sha256.hex.toString
+        branch.identity shouldEqual ("B" + fred + fredLeaf.identity + zenaLeaf.identity).sha256.hex.toString
       }
     }
 
-    describe("adding an item") {
-      describe("when the string being added is lexicographically less than the pivot") {
-        it("should add the string to the left side of the branch") {
-          branch.add(store, item1)
-          branch contains item1 shouldEqual true
-          // figure out which side of the branch it got added to
+    describe("adding an item containing 'aaa'") {
+      val aaa = "aaa"
+      val result = branch.add(store, aaa)
+      val aaaLeaf = store.retrieve(Leaf("aaa").identity)
+
+      describe("since 'aaa' is lexicographically greater than the branch pivot, currently 'zena'") {
+        println("result branch: " + result)
+        println("left: " + store.retrieve(result.leftLeafId))
+        println("right: " + store.retrieve(result.rightLeafId))
+        it("should add a new Leaf(aaa) to the left side of the branch") {
+          result.leftLeafId shouldEqual aaaLeaf.identity
+        }
+
+        it("should connect the branch to the other leaf") {
+          result.rightLeafId shouldEqual zenaLeaf.identity
+        }
+
+        describe("asking whether the item is in one of the leaves connected to the branch") {
+          it("returns true") {
+            result contains(store, fred) shouldEqual true
+          }
         }
       }
 
       describe("when the string being added is lexicographically greater than the pivot") {
-        it("it should add the string to the right side of the branch") {
-          branch.add(store, item2)
-          branch contains item2 shouldEqual true
-          // figure out which side of the branch it got added to
+        branch.add(store, zena)
+        it("it should add a new Leaf to the right side of the branch") {
+          branch.leftLeafId shouldEqual fredLeaf.identity
+          branch.rightLeafId shouldEqual zenaLeaf.identity
         }
+
+        describe("asking whether the item is in one of the leaves connected to the branch") {
+          it("returns true") {
+            branch contains(store, zena) shouldEqual true
+          }
+        }
+
+
+      }
+    }
+
+    describe("attempting to find an item which isn't in the tree") {
+      it("should fail") {
+        branch.contains(store, "nope") shouldEqual false
       }
     }
 

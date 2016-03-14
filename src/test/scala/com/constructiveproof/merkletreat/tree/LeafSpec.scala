@@ -36,7 +36,7 @@ class LeafSpec extends TestStack {
       describe("when the item is not yet in the tree") {
         val newItem = "blah"
         val newLeaf = Leaf(newItem)
-        val newBranch = Branch(leaf.item, leaf.identity, newLeaf.identity)
+        val newBranch: Branch = Branch(leaf.item, leaf.identity, newLeaf.identity)
         leaf.add(store, newItem)
 
         it("should create and store a new Leaf"){
@@ -50,10 +50,10 @@ class LeafSpec extends TestStack {
         describe("when the item being added is lexicographically less than the current leaf's item") {
           val newItem = "blah"
           val newLeafIdentity = Leaf(newItem).identity
-          val resultLeaf = leaf.add(store, newItem)
+          val resultBranch = leaf.add(store, newItem)
 
           it("should return a new Branch with the current leaf's item as the pivot") {
-            resultLeaf shouldEqual Branch(leaf.item, leaf.identity, newLeafIdentity)
+            resultBranch shouldEqual Branch(leaf.item, leaf.identity, newLeafIdentity)
           }
         }
 
@@ -61,9 +61,9 @@ class LeafSpec extends TestStack {
           it("should return a new Branch with the new item as the pivot"){
             val newItem = "zigzag"
             val newLeafIdentity = Leaf(newItem).identity
-            val resultLeaf = leaf.add(store, newItem)
+            val resultBranch = leaf.add(store, newItem)
 
-            resultLeaf shouldEqual Branch(newItem, newLeafIdentity, leaf.identity)
+            resultBranch shouldEqual Branch(newItem, newLeafIdentity, leaf.identity)
           }
         }
       }
