@@ -33,8 +33,8 @@ class BranchSpec extends TestStack {
           newBranch.leftLeafId shouldEqual aaaLeaf.identity
         }
 
-        it("should connect the branch to the other leaf") {
-          result.rightLeafId shouldEqual zenaLeaf.identity
+        it("should connect the branch to the other leaf [verified by writing out the tree state ]") {
+          newBranch.rightLeafId shouldEqual fredLeaf.identity
         }
 
         it("should make the new branch's pivot 'aaa'") {
