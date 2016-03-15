@@ -1,16 +1,16 @@
 package com.constructiveproof.merkletreat.tree
 
-class Tree {
+import com.constructiveproof.merkletreat.stores.Storable
 
-  private var store: Map[String, String]  = Map.empty
+class Tree(store: Storable) {
 
-  def add(key: String, value: String) = {
-    val thing = key -> value
-    store = store + thing
+  def add(item: String) = {
+    val node = Leaf(item, store)
+    store.add(node)
   }
 
   def isIn(key: String): Boolean = {
-    store.contains(key)
+    true
   }
 
 }

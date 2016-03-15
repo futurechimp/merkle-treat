@@ -1,18 +1,20 @@
 package com.constructiveproof.merkletreat.tree
 
+import com.constructiveproof.merkletreat.stores.MapStore
 import com.constructiveproof.merkletreat.testsupport.TestStack
 
 class TreeSpec extends TestStack {
 
   describe("A Merkle Tree") {
-    val tree = new Tree
+    val tree = new Tree(new MapStore)
 
-    describe("after adding a string") {
-      tree.add("foo", "value")
+    describe("when the tree is empty") {
+      describe("adding a string") {
+        tree.add("foo")
 
-      it("should be be in the tree") {
-        val isIn = tree.isIn("foo")
-        isIn shouldBe true
+        it("should put the string in the tree") {
+          tree.isIn("foo") shouldBe true
+        }
       }
     }
 
