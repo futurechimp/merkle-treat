@@ -2,7 +2,7 @@ package com.constructiveproof.merkletreat.tree
 
 import com.constructiveproof.merkletreat.stores.MapStore
 import com.constructiveproof.merkletreat.testsupport.TestStack
-import com.roundeights.hasher.Implicits._
+import com.constructiveproof.merkletreat.utils.Hashify
 
 class BranchSpec extends TestStack {
 
@@ -18,7 +18,7 @@ class BranchSpec extends TestStack {
 
     describe("identity") {
       it("should be a SHA256 hash of the branch properties prepended by the letter B") {
-        branch.identity shouldEqual ("B" + fred + fredLeaf.identity + zenaLeaf.identity).sha256.hex.toString
+        branch.identity shouldEqual Hashify("B" + fred + fredLeaf.identity + zenaLeaf.identity)
       }
     }
 
