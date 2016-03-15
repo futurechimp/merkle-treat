@@ -26,20 +26,23 @@ class BranchSpec extends TestStack {
       val aaa = "aaa"
       val result = branch.add(aaa)
       val aaaLeaf = store.retrieve(Leaf("aaa", store).identity)
+      val newBranch = store.retrieve(result.leftLeafId).asInstanceOf[Branch]
 
       describe("since 'aaa' is lexicographically greater than the branch pivot, currently 'zena'") {
         it("should add a new Leaf(aaa) to the left side of the branch") {
-          store.retrieve(result.leftLeafId).asInstanceOf[Branch].leftLeafId shouldEqual aaaLeaf.identity
+          newBranch.leftLeafId shouldEqual aaaLeaf.identity
         }
 
         it("should connect the branch to the other leaf") {
           result.rightLeafId shouldEqual zenaLeaf.identity
         }
 
-        ignore("should make the new branch's pivot 'aaa'") {}
+        it("should make the new branch's pivot 'aaa'") {
+          newBranch.pivot shouldEqual aaa
+        }
 
         describe("asking whether the item is in one of the leaves connected to the branch") {
-          it("xxx returns true"){
+          it("returns true"){
             result contains fred shouldEqual true
           }
         }
