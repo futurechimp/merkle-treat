@@ -17,7 +17,7 @@ class BranchSpec extends TestStack {
     val zenaLeaf = store.retrieve(branch.rightLeafId)
 
     describe("identity") {
-      ignore("should be a SHA256 hash of the branch properties prepended by the letter B") {
+      it("should be a SHA256 hash of the branch properties prepended by the letter B") {
         branch.identity shouldEqual ("B" + fred + fredLeaf.identity + zenaLeaf.identity).sha256.hex.toString
       }
     }
