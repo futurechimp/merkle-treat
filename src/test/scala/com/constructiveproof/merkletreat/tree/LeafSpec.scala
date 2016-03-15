@@ -35,7 +35,9 @@ class LeafSpec extends TestStack {
 
     describe("adding an item to a Leaf") {
       describe("when it's the same item") {
-        ignore("should return itself") {}
+        it("should return itself") {
+          fooLeaf.add(foo) shouldEqual fooLeaf
+        }
       }
 
       describe("when the item is not yet in the tree") {
