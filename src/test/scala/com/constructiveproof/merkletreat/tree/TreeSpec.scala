@@ -34,7 +34,9 @@ class TreeSpec extends TestStack {
       }
 
       describe("checking for a string that isn't in the tree") {
-        it("should return false") { tree.contains("nope") shouldBe false }
+        it("should return false") {
+          tree.contains("nope2") shouldBe false
+        }
       }
 
       describe("checking for the original string we put in the tree") {
