@@ -18,7 +18,6 @@ class Tree(store: Storable, rootHash: String = "Om") {
       store.add(leaf)
       head = leaf.identity
     } else {
-      val headNode = store.retrieve(head)
       val newHeadNode = headNode.add(key)
       head = newHeadNode.identity
     }
@@ -29,8 +28,7 @@ class Tree(store: Storable, rootHash: String = "Om") {
       false
     } else {
       val key = Hashify(item)
-      val headElement = store.retrieve(head)
-      headElement.contains(key)
+      headNode.contains(key)
     }
   }
 
@@ -38,6 +36,10 @@ class Tree(store: Storable, rootHash: String = "Om") {
 
   def isEmpty: Boolean = {
     head == rootHash
+  }
+
+  def headNode: Node = {
+    store.retrieve(head)
   }
 
 }
