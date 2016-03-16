@@ -2,6 +2,7 @@ package com.constructiveproof.merkletreat.tree
 
 import com.constructiveproof.merkletreat.stores.MapStore
 import com.constructiveproof.merkletreat.testsupport.TestStack
+import com.constructiveproof.merkletreat.utils.Hashify
 import com.roundeights.hasher.Implicits._
 
 class LeafSpec extends TestStack {
@@ -18,7 +19,7 @@ class LeafSpec extends TestStack {
 
     describe("leaf identity") {
       it("should be a SHA256 hash of the item with the letter L prepended") {
-        val identityHash = ("L" + foo).sha256.hex.toString
+        val identityHash = Hashify("L" + foo)
         fooLeaf.identity shouldEqual identityHash
       }
     }
