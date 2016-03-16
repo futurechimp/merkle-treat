@@ -22,6 +22,7 @@ sealed trait Node {
 
 
 case class Leaf(item: String, store: Storable) extends Node {
+
   val identity = Hashify("L" + item)
 
   def add(newItem: String): Node = {

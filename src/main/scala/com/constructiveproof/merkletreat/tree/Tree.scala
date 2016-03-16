@@ -29,7 +29,7 @@ class Tree(store: Storable, rootHash: String = "Om") {
       false
     } else {
       val key = Hashify(item)
-      val headElement = store.retrieve(key)
+      val headElement = store.retrieve(head)
       headElement.contains(key)
     }
   }
