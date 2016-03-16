@@ -3,7 +3,6 @@ package com.constructiveproof.merkletreat.tree
 import com.constructiveproof.merkletreat.stores.MapStore
 import com.constructiveproof.merkletreat.testsupport.TestStack
 import com.constructiveproof.merkletreat.utils.Hashify
-import com.roundeights.hasher.Implicits._
 
 class LeafSpec extends TestStack {
 
