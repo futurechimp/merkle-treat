@@ -8,18 +8,10 @@ class TreeSpec extends TestStack {
 
   describe("A Merkle Tree") {
     val tree = new Tree(new MapStore)
-//
-//    println("0. Tree store: " + tree.theStore)
-//    val fooHash = Hashify("foo")
-//    println("Reference: foo leaf id should be: " + fooHash)
-//    println("Reference: L + foo's hash should be: " + Hashify("L" + fooHash))
 
     describe("when the tree is empty") {
       describe("adding a string") {
         tree.add("foo")
-
-//        println("1. added 'foo': " + tree.theStore)
-
         it("should put the string in the tree") {
           tree.contains("foo") shouldBe true
         }
@@ -28,13 +20,28 @@ class TreeSpec extends TestStack {
 
     describe("checking for a string that isn't in the tree") {
       it("should return false") {
-        tree.contains("bar") shouldBe false
+        tree.contains("nope") shouldBe false
       }
     }
 
     describe("when the tree has one item in it") {
+      describe("adding another string") {
+        tree.add("bar")
 
+        it("should put the string in the tree") {
+          tree.contains("bar") shouldBe true
+        }
+      }
 
+      describe("checking for a string that isn't in the tree") {
+        it("should return false") { tree.contains("nope") shouldBe false }
+      }
+
+      describe("checking for the original string we put in the tree") {
+        it("should still return true") {
+          tree.contains("foo") shouldEqual true
+        }
+      }
     }
   }
 
