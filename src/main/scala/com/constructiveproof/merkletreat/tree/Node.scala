@@ -92,6 +92,4 @@ case class Branch(pivot: String, leftLeafId: String, rightLeafId: String, dataSt
 
   case class HashIdentityException(message: String = "Stored key doesn't match hash!") extends Throwable(message)
 
-
-
 }
