@@ -3,15 +3,15 @@ package com.constructiveproof.merkletreat.tree
 import com.constructiveproof.merkletreat.stores.Storable
 import com.constructiveproof.merkletreat.utils.Hashify
 
-class Tree(store: Storable, rootHash: String = "Om") {
+class Tree(dataStore: Storable, rootHash: String = "Om") {
 
   var head: String = rootHash
 
   def add(item: String): Unit = {
     val key = Hashify(item)
     if (isEmpty) {
-      val leaf = Leaf(key, store)
-      store.add(leaf)
+      val leaf = Leaf(key, dataStore)
+      dataStore.add(leaf)
       head = leaf.identity
     } else {
       val newHeadNode = headNode.add(key)
@@ -35,7 +35,7 @@ class Tree(store: Storable, rootHash: String = "Om") {
   }
 
   def headNode: Node = {
-    store.retrieve(head)
+    dataStore.retrieve(head)
   }
 
 }
