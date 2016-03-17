@@ -46,5 +46,4 @@ class TreeSpec extends TestStack {
       }
     }
   }
-
 }
