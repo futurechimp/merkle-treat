@@ -70,24 +70,24 @@ case class Branch(pivot: String, leftLeafId: String, rightLeafId: String, dataSt
     val branch = if (it <= pivot) {
       val leftLeaf = dataStore.retrieve(leftLeafId)
       checkHash(leftLeafId, leftLeaf)
-      val subLeaf = leftLeaf.add(it)
-      Branch(pivot, subLeaf.identity, rightLeafId, dataStore)
+      val newLeaf = leftLeaf.add(it)
+      Branch(pivot, newLeaf.identity, rightLeafId, dataStore)
 
     } else {
       val rightLeaf = dataStore.retrieve(rightLeafId)
       checkHash(rightLeafId, rightLeaf)
-      val subLeaf = rightLeaf.add(it)
-      Branch(pivot, leftLeafId, subLeaf.identity, dataStore)
+      val newLeaf = rightLeaf.add(it)
+      Branch(pivot, leftLeafId, newLeaf.identity, dataStore)
     }
     dataStore.add(branch)
     branch
   }
 
-  def contains(thing: String): Boolean = {
-    if (thing <= pivot) {
-      dataStore.retrieve(leftLeafId).contains(thing)
+  def contains(it: String): Boolean = {
+    if (it <= pivot) {
+      dataStore.retrieve(leftLeafId).contains(it)
     } else {
-      dataStore.retrieve(rightLeafId).contains(thing)
+      dataStore.retrieve(rightLeafId).contains(it)
     }
   }
 
