@@ -17,42 +17,48 @@ class Tree(dataStore: DataStore, rootHash: String = "Om") {
 
   /**
     * Add an item to the tree.
+ *
     * @param item the String to add.
     */
   def add(item: String): Unit = {
     val key = Hashify(item)
     if (isEmpty) {
-      val leaf = Leaf(key, dataStore)
-      dataStore.put(leaf)
-      head = leaf.identity
+      addInitialLeaf(key)
     } else {
       val newHeadNode = headNode.add(key)
       head = newHeadNode.identity
     }
   }
 
-  /**
-    * Find out whether this item has previously been added to the tree.
-    * @param item the String to check for
-    * @return a Boolean indicating whether the item is already in the tree.
-    */
+/**
+  * Find out whether this item has previously been added to the tree.
+  *
+  * @param item the String to check for
+  * @return a Boolean indicating whether the item is already in the tree.
+  */
   def contains(item: String): Boolean = {
-    if (isEmpty) {
-      false
-    } else {
-      val key = Hashify(item)
-      headNode.contains(key)
-    }
+  if (isEmpty) {
+    false
+  } else {
+    val key = Hashify(item)
+    headNode.contains(key)
   }
+}
 
   private
+
+  def headNode: Node = {
+    dataStore.get(head)
+  }
 
   def isEmpty: Boolean = {
     head == rootHash
   }
 
-  def headNode: Node = {
-    dataStore.get(head)
+  def addInitialLeaf(key: String): Unit = {
+    val leaf = Leaf(key, dataStore)
+    dataStore.put(leaf)
+    head = leaf.identity
   }
 
 }
