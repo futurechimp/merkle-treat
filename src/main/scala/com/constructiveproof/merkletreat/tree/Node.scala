@@ -65,17 +65,17 @@ case class Branch(pivot: String, leftLeafId: String, rightLeafId: String, store:
 
   val identity = Hashify("B" + pivot + leftLeafId + rightLeafId)
 
-  def add(newItem: String): Branch = {
-    val branch = if (newItem <= pivot) {
+  def add(it: String): Branch = {
+    val branch = if (it <= pivot) {
       val leftLeaf = store.retrieve(leftLeafId)
       checkHash(leftLeafId, leftLeaf)
-      val subLeaf = leftLeaf.add(newItem)
+      val subLeaf = leftLeaf.add(it)
       Branch(pivot, subLeaf.identity, rightLeafId, store)
 
     } else {
       val rightLeaf = store.retrieve(rightLeafId)
       checkHash(rightLeafId, rightLeaf)
-      val subLeaf = rightLeaf.add(newItem)
+      val subLeaf = rightLeaf.add(it)
       Branch(pivot, leftLeafId, subLeaf.identity, store)
     }
     store.add(branch)
