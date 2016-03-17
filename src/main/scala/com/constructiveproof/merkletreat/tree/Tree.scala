@@ -6,6 +6,7 @@ import com.constructiveproof.merkletreat.utils.Hashify
 /**
   * A Merkle tree class which can either use a Map as a datastore (the default)
   * or be backed by a persistent datastore of your choice.
+  *
   * @param dataStore a DataStore, defaults to a Scala Map. Implement your own
   *                  by extending DataStore, and you have a persistent Merkle
   *                  tree using whatever technology suits you.
