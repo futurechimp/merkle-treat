@@ -56,5 +56,4 @@ class LeafSpec extends TestStack {
       }
     }
   }
-
 }
