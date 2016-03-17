@@ -2,7 +2,6 @@ package com.constructiveproof.merkletreat.tree
 
 import com.constructiveproof.merkletreat.stores.MapStore
 import com.constructiveproof.merkletreat.testsupport.TestStack
-import com.constructiveproof.merkletreat.utils.Hashify
 
 class TreeSpec extends TestStack {
 
