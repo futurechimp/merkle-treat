@@ -7,10 +7,6 @@ class Tree(store: Storable, rootHash: String = "Om") {
 
   var head: String = rootHash
 
-  def theStore = {
-    store.theMap
-  }
-
   def add(item: String): Unit = {
     val key = Hashify(item)
     if (isEmpty) {

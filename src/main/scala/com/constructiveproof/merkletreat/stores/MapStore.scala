@@ -7,10 +7,6 @@ class MapStore extends Storable {
 
   var map = mutable.Map[String, Node]()
 
-  def theMap = {
-    map
-  }
-
   override def add(node: Node): Unit = {
     node match {
       case leaf: Leaf => map.update(leaf.identity, leaf)
