@@ -25,26 +25,38 @@ case class Leaf(item: String, store: Storable) extends Node {
 
   val identity = Hashify("L" + item)
 
-  def add(newItem: String): Node = {
-    if (newItem == item) {
-      return this // TODO: gross for type safety
-    }
-
-    val newLeaf = Leaf(newItem, store)
-    store.add(newLeaf)
-
-    val newBranch = if (item < newItem) {
-      Branch(item, identity, newLeaf.identity, store)
+  def add(it: String): Node = {
+    if (it == item) {
+      this
     } else {
-      Branch(newItem, newLeaf.identity, identity, store)
+      create(it)
     }
+  }
 
+  def contains(it: String): Boolean = {
+    it == item
+  }
+
+  private
+
+  def create(it: String): Branch = {
+    val newLeaf = createNewLeaf(it)
+    val newBranch = createNewBranch(it, newLeaf)
+    store.add(newLeaf)
     store.add(newBranch)
     newBranch
   }
 
-  def contains(thing: String): Boolean = {
-    item == thing
+  def createNewLeaf(it: String): Leaf = {
+    Leaf(it, store)
+  }
+
+  def createNewBranch(it: String, newLeaf: Leaf): Branch = {
+    if (item < it) {
+      Branch(item, identity, newLeaf.identity, store)
+    } else {
+      Branch(it, newLeaf.identity, identity, store)
+    }
   }
 
 }
