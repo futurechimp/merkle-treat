@@ -11,7 +11,7 @@ class Tree(store: Storable, rootHash: String = "Om") {
     store.theMap
   }
 
-  def add(item: String) = {
+  def add(item: String): Unit = {
     val key = Hashify(item)
     if (isEmpty) {
       val leaf = Leaf(key, store)
