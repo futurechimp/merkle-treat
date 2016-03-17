@@ -21,7 +21,7 @@ sealed trait Node {
 }
 
 
-case class Leaf(item: String, store: Storable) extends Node {
+case class Leaf(item: String, datastore: Storable) extends Node {
 
   val identity = Hashify("L" + item)
 
@@ -42,20 +42,20 @@ case class Leaf(item: String, store: Storable) extends Node {
   def create(it: String): Branch = {
     val newLeaf = createNewLeaf(it)
     val newBranch = createNewBranch(it, newLeaf)
-    store.add(newLeaf)
-    store.add(newBranch)
+    datastore.add(newLeaf)
+    datastore.add(newBranch)
     newBranch
   }
 
   def createNewLeaf(it: String): Leaf = {
-    Leaf(it, store)
+    Leaf(it, datastore)
   }
 
   def createNewBranch(it: String, newLeaf: Leaf): Branch = {
     if (item < it) {
-      Branch(item, identity, newLeaf.identity, store)
+      Branch(item, identity, newLeaf.identity, datastore)
     } else {
-      Branch(it, newLeaf.identity, identity, store)
+      Branch(it, newLeaf.identity, identity, datastore)
     }
   }
 
