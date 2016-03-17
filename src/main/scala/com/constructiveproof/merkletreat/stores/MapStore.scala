@@ -3,7 +3,7 @@ package com.constructiveproof.merkletreat.stores
 import com.constructiveproof.merkletreat.tree.{Branch, Leaf, Node}
 import scala.collection.mutable
 
-class MapStore extends Storable {
+class MapStore extends DataStore {
 
   private val map = mutable.Map[String, Node]()
 

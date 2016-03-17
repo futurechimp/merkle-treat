@@ -2,7 +2,7 @@ package com.constructiveproof.merkletreat.stores
 
 import com.constructiveproof.merkletreat.tree.Node
 
-trait Storable {
+trait DataStore {
 
   def put(node: Node): Unit
 

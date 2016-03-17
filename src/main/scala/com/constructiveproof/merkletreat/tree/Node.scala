@@ -1,6 +1,6 @@
 package com.constructiveproof.merkletreat.tree
 
-import com.constructiveproof.merkletreat.stores.Storable
+import com.constructiveproof.merkletreat.stores.DataStore
 import com.constructiveproof.merkletreat.utils.Hashify
 
 sealed trait Node {
@@ -22,7 +22,7 @@ sealed trait Node {
 }
 
 
-case class Leaf(item: String, dataStore: Storable) extends Node {
+case class Leaf(item: String, dataStore: DataStore) extends Node {
 
   val identity = Hashify("L" + item)
 
@@ -62,7 +62,7 @@ case class Leaf(item: String, dataStore: Storable) extends Node {
 
 }
 
-case class Branch(pivot: String, leftLeafId: String, rightLeafId: String, dataStore: Storable) extends Node {
+case class Branch(pivot: String, leftLeafId: String, rightLeafId: String, dataStore: DataStore) extends Node {
 
   val identity = Hashify("B" + pivot + leftLeafId + rightLeafId)
 

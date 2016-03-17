@@ -1,9 +1,9 @@
 package com.constructiveproof.merkletreat.tree
 
-import com.constructiveproof.merkletreat.stores.Storable
+import com.constructiveproof.merkletreat.stores.DataStore
 import com.constructiveproof.merkletreat.utils.Hashify
 
-class Tree(dataStore: Storable, rootHash: String = "Om") {
+class Tree(dataStore: DataStore, rootHash: String = "Om") {
 
   var head: String = rootHash
 
