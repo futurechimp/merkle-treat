@@ -72,7 +72,6 @@ case class Branch(pivot: String, leftLeafId: String, rightLeafId: String, dataSt
       checkHash(leftLeafId, leftLeaf)
       val newLeaf = leftLeaf.add(it)
       Branch(pivot, newLeaf.identity, rightLeafId, dataStore)
-
     } else {
       val rightLeaf = dataStore.get(rightLeafId)
       checkHash(rightLeafId, rightLeaf)
