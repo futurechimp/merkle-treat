@@ -9,15 +9,7 @@ sealed trait Node {
 
   def add(it: String): Node
 
-  def checkHash(key: String, value: Node) = {
-    if (key != value.identity) {
-      throw HashIdentityException()
-    }
-  }
-
   def contains(it: String): Boolean
-
-  case class HashIdentityException(message: String = "Stored key doesn't match hash!") extends Throwable(message)
 
 }
 
@@ -89,5 +81,17 @@ case class Branch(pivot: String, leftLeafId: String, rightLeafId: String, dataSt
       dataStore.get(rightLeafId).contains(it)
     }
   }
+
+  private
+
+  def checkHash(key: String, value: Node) = {
+    if (key != value.identity) {
+      throw HashIdentityException()
+    }
+  }
+
+  case class HashIdentityException(message: String = "Stored key doesn't match hash!") extends Throwable(message)
+
+
 
 }
