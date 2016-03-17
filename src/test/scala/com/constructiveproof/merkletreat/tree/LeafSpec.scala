@@ -10,7 +10,7 @@ class LeafSpec extends TestStack {
     val store = new MapStore
     val foo = "foo"
     val fooLeaf = Leaf(foo, store)
-    store.add(fooLeaf)
+    store.put(fooLeaf)
 
     describe("knows what item it's got inside it") {
       fooLeaf.item shouldEqual foo
@@ -47,11 +47,11 @@ class LeafSpec extends TestStack {
         val newBranch = fooLeaf.add(newItem)
 
         it("should create and store a new Leaf") {
-          store.retrieve(newLeaf.identity) shouldEqual newLeaf
+          store.get(newLeaf.identity) shouldEqual newLeaf
         }
 
         it("should create and store a new Branch") {
-          store.retrieve(newBranch.identity) shouldEqual newBranch
+          store.get(newBranch.identity) shouldEqual newBranch
         }
       }
     }

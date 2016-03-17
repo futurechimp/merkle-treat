@@ -43,8 +43,8 @@ case class Leaf(item: String, dataStore: Storable) extends Node {
   def create(it: String): Branch = {
     val newLeaf = createNewLeaf(it)
     val newBranch = createNewBranch(it, newLeaf)
-    dataStore.add(newLeaf)
-    dataStore.add(newBranch)
+    dataStore.put(newLeaf)
+    dataStore.put(newBranch)
     newBranch
   }
 
@@ -68,26 +68,26 @@ case class Branch(pivot: String, leftLeafId: String, rightLeafId: String, dataSt
 
   def add(it: String): Branch = {
     val branch = if (it <= pivot) {
-      val leftLeaf = dataStore.retrieve(leftLeafId)
+      val leftLeaf = dataStore.get(leftLeafId)
       checkHash(leftLeafId, leftLeaf)
       val newLeaf = leftLeaf.add(it)
       Branch(pivot, newLeaf.identity, rightLeafId, dataStore)
 
     } else {
-      val rightLeaf = dataStore.retrieve(rightLeafId)
+      val rightLeaf = dataStore.get(rightLeafId)
       checkHash(rightLeafId, rightLeaf)
       val newLeaf = rightLeaf.add(it)
       Branch(pivot, leftLeafId, newLeaf.identity, dataStore)
     }
-    dataStore.add(branch)
+    dataStore.put(branch)
     branch
   }
 
   def contains(it: String): Boolean = {
     if (it <= pivot) {
-      dataStore.retrieve(leftLeafId).contains(it)
+      dataStore.get(leftLeafId).contains(it)
     } else {
-      dataStore.retrieve(rightLeafId).contains(it)
+      dataStore.get(rightLeafId).contains(it)
     }
   }
 

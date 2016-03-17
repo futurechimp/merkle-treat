@@ -4,8 +4,8 @@ import com.constructiveproof.merkletreat.tree.Node
 
 trait Storable {
 
-  def add(node: Node): Unit
+  def put(node: Node): Unit
 
-  def retrieve(key: String): Node
+  def get(key: String): Node
 
 }

@@ -12,23 +12,23 @@ class MapStoreSpec extends TestStack {
     val branch = Branch("pivot", "leftBranchId", "rightBranchId", store)
 
     describe("adding a leaf") {
-      store.add(leaf)
+      store.put(leaf)
 
       describe("retrieving the item") {
         val key = leaf.identity
 
         it("should be retrievable by key") {
-          store.retrieve(key) shouldEqual leaf
+          store.get(key) shouldEqual leaf
         }
       }
     }
 
     describe("adding a branch") {
-      store.add(branch)
+      store.put(branch)
       val key = branch.identity
 
       it("should be retrievable by key") {
-        store.retrieve(key) shouldEqual branch
+        store.get(key) shouldEqual branch
       }
     }
   }

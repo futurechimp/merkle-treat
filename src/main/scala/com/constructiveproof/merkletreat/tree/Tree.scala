@@ -11,7 +11,7 @@ class Tree(dataStore: Storable, rootHash: String = "Om") {
     val key = Hashify(item)
     if (isEmpty) {
       val leaf = Leaf(key, dataStore)
-      dataStore.add(leaf)
+      dataStore.put(leaf)
       head = leaf.identity
     } else {
       val newHeadNode = headNode.add(key)
@@ -35,7 +35,7 @@ class Tree(dataStore: Storable, rootHash: String = "Om") {
   }
 
   def headNode: Node = {
-    dataStore.retrieve(head)
+    dataStore.get(head)
   }
 
 }

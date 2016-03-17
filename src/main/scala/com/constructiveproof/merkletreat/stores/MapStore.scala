@@ -7,14 +7,14 @@ class MapStore extends Storable {
 
   private val map = mutable.Map[String, Node]()
 
-  override def add(node: Node): Unit = {
+  override def put(node: Node): Unit = {
     node match {
       case leaf: Leaf => map.update(leaf.identity, leaf)
       case branch: Branch => map.update(branch.identity, branch)
     }
   }
 
-  override def retrieve(key: String): Node = {
+  override def get(key: String): Node = {
     map(key)
   }
 }
