@@ -5,7 +5,7 @@ import scala.collection.mutable
 
 class MapStore extends Storable {
 
-  var map = mutable.Map[String, Node]()
+  private val map = mutable.Map[String, Node]()
 
   override def add(node: Node): Unit = {
     node match {
@@ -17,5 +17,4 @@ class MapStore extends Storable {
   override def retrieve(key: String): Node = {
     map(key)
   }
-
 }
