@@ -31,8 +31,5 @@ class MapStoreSpec extends TestStack {
         store.retrieve(key) shouldEqual branch
       }
     }
-
-
   }
-
 }
