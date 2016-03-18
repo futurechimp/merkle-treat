@@ -4,9 +4,9 @@ organization := "com.constructiveproof"
 
 version := "0.1.0-SNAPSHOT"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
-crossScalaVersions := Seq("2.10.6", "2.11.7")
+crossScalaVersions := Seq("2.10.6", "2.11.8")
 
 libraryDependencies ++= Seq(
   "com.roundeights" %% "hasher" % "1.2.0",
